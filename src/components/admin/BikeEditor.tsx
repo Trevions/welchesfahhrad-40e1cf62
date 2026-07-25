@@ -324,7 +324,22 @@ export function BikeEditor({ initial }: { initial?: Bike }) {
       qc.invalidateQueries({ queryKey: ["public-bikes"] });
       if (!form.id) navigate({ to: "/mnv/bikes/$id", params: { id: res.id }, replace: true });
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Fehler");
+      console.error("[BikeEditor] save failed", e);
+      const raw = e instanceof Error ? e.message : String(e);
+      let msg = raw;
+      try {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) {
+          msg = parsed
+            .map((i: any) => `${(i.path || []).join(".") || "?"}: ${i.message}`)
+            .join(" · ");
+        } else if (parsed?.message) {
+          msg = parsed.message;
+        }
+      } catch {
+        // raw already a plain string
+      }
+      toast.error(msg.slice(0, 400), { duration: 10000 });
     } finally {
       setSaving(false);
     }
