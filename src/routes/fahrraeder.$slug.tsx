@@ -1547,8 +1547,12 @@ function SafetySection({ b }: { b: Bike }) {
             <div>
               <div className="text-xs text-muted-foreground mb-1">Empfohlene Schlösser</div>
               <div className="flex flex-wrap gap-1">
-                {s.recommended_locks.map((l: string, i: number) => (
-                  <span key={i} className="text-[11px] border border-border px-2 py-0.5">{l}</span>
+                {s.recommended_locks.map((l: any, i: number) => (
+                  <span key={i} className="text-[11px] border border-border px-2 py-0.5">
+                    {typeof l === "object" && l !== null
+                      ? String(l.name ?? l.item ?? l.title ?? l.label ?? formatPrimitiveList(l))
+                      : String(l)}
+                  </span>
                 ))}
               </div>
             </div>
