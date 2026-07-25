@@ -622,6 +622,16 @@ function humanizeKey(k: string): string {
 
 function formatPrimitive(v: any): string {
   if (typeof v === "boolean") return v ? "Ja" : "Nein";
+  if (v == null) return "";
+  if (typeof v === "object") {
+    if (Array.isArray(v)) {
+      return v.map((x) => (x && typeof x === "object" ? formatPrimitiveList(x) : String(x))).join(", ");
+    }
+    const o = v as Record<string, any>;
+    const name = o.name ?? o.title ?? o.label ?? o.item ?? o.text;
+    if (name != null && typeof name !== "object") return String(name);
+    return formatPrimitiveList(v);
+  }
   return String(v);
 }
 
