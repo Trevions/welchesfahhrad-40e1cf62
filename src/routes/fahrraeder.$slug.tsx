@@ -1568,8 +1568,12 @@ function AccessoriesSection({ b }: { b: Bike }) {
   return (
     <Section id="accessories" title="Kompatibles Zubehör" icon={Wrench}>
       <div className="flex flex-wrap gap-2">
-        {b.accessories.map((a, i) => (
-          <span key={i} className="border border-border bg-card px-3 py-1.5 text-sm">{a}</span>
+        {b.accessories.map((a: any, i: number) => (
+          <span key={i} className="border border-border bg-card px-3 py-1.5 text-sm">
+            {typeof a === "object" && a !== null
+              ? String(a.name ?? a.item ?? a.title ?? a.label ?? formatPrimitiveList(a))
+              : String(a)}
+          </span>
         ))}
       </div>
     </Section>
