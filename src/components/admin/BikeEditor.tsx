@@ -316,6 +316,19 @@ export function BikeEditor({ initial }: { initial?: Bike }) {
         meta_title: form.meta_title || null,
         meta_description: form.meta_description || null,
         availability: form.availability || null,
+        faq: (form.faq ?? [])
+          .map((f) => ({ q: String(f?.q ?? ""), a: String(f?.a ?? "") }))
+          .filter((f) => f.q.trim() || f.a.trim()),
+        videos: (form.videos ?? [])
+          .map((v) => ({ url: String(v?.url ?? ""), title: v?.title ? String(v.title) : undefined }))
+          .filter((v) => v.url.trim()),
+        awards: (form.awards ?? [])
+          .map((a) => ({
+            name: String(a?.name ?? ""),
+            year: typeof a?.year === "number" ? a.year : undefined,
+            source: a?.source ? String(a.source) : undefined,
+          }))
+          .filter((a) => a.name.trim()),
       };
       const res = await save({ data: payload });
       toast.success(publish ? "Veröffentlicht" : "Gespeichert");
