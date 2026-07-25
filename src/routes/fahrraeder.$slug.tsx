@@ -622,6 +622,16 @@ function humanizeKey(k: string): string {
 
 function formatPrimitive(v: any): string {
   if (typeof v === "boolean") return v ? "Ja" : "Nein";
+  if (v == null) return "";
+  if (typeof v === "object") {
+    if (Array.isArray(v)) {
+      return v.map((x) => (x && typeof x === "object" ? formatPrimitiveList(x) : String(x))).join(", ");
+    }
+    const o = v as Record<string, any>;
+    const name = o.name ?? o.title ?? o.label ?? o.item ?? o.text;
+    if (name != null && typeof name !== "object") return String(name);
+    return formatPrimitiveList(v);
+  }
   return String(v);
 }
 
@@ -1537,8 +1547,12 @@ function SafetySection({ b }: { b: Bike }) {
             <div>
               <div className="text-xs text-muted-foreground mb-1">Empfohlene Schlösser</div>
               <div className="flex flex-wrap gap-1">
-                {s.recommended_locks.map((l: string, i: number) => (
-                  <span key={i} className="text-[11px] border border-border px-2 py-0.5">{l}</span>
+                {s.recommended_locks.map((l: any, i: number) => (
+                  <span key={i} className="text-[11px] border border-border px-2 py-0.5">
+                    {typeof l === "object" && l !== null
+                      ? String(l.name ?? l.item ?? l.title ?? l.label ?? formatPrimitiveList(l))
+                      : String(l)}
+                  </span>
                 ))}
               </div>
             </div>
@@ -1554,8 +1568,12 @@ function AccessoriesSection({ b }: { b: Bike }) {
   return (
     <Section id="accessories" title="Kompatibles Zubehör" icon={Wrench}>
       <div className="flex flex-wrap gap-2">
-        {b.accessories.map((a, i) => (
-          <span key={i} className="border border-border bg-card px-3 py-1.5 text-sm">{a}</span>
+        {b.accessories.map((a: any, i: number) => (
+          <span key={i} className="border border-border bg-card px-3 py-1.5 text-sm">
+            {typeof a === "object" && a !== null
+              ? String(a.name ?? a.item ?? a.title ?? a.label ?? formatPrimitiveList(a))
+              : String(a)}
+          </span>
         ))}
       </div>
     </Section>
