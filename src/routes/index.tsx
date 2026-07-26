@@ -185,12 +185,15 @@ function BikeIcon({ spin = false, fast = false, className = "" }: { spin?: boole
   );
 }
 
-/** Two-digit index label used throughout — "01", "02"... the editorial-technical device that ties sections together. */
+/** Glass pill index badge tying sections together — "01 — Kategorien" */
 function SectionIndex({ n, label }: { n: string; label: string }) {
   return (
-    <div className="flex items-center gap-3">
-      <span className="font-mono text-xs text-signal tabular-nums">{n}</span>
-      <span className="h-px w-8 bg-border" />
+    <div
+      data-reveal
+      className="inline-flex items-center gap-2.5 rounded-full glass-card !shadow-none px-4 py-1.5"
+    >
+      <span className="font-mono text-xs font-bold text-signal tabular-nums">{n}</span>
+      <span className="h-3 w-px bg-border" />
       <span className="eyebrow text-muted-foreground">{label}</span>
     </div>
   );
@@ -199,9 +202,11 @@ function SectionIndex({ n, label }: { n: string; label: string }) {
 function BikeProductCard({
   bike,
   match,
+  index = 0,
 }: {
   bike: any;
   match: number | null;
+  index?: number;
 }) {
   const img = articleImageUrl(bike.image_url ?? "") || bike.image_url || "/og.jpg";
   const rating =
@@ -209,12 +214,16 @@ function BikeProductCard({
       ? Number(bike.expert_rating).toFixed(1)
       : null;
   return (
-    <article className="group relative flex flex-col bg-card border border-border hover:border-foreground transition-colors">
+    <article
+      data-reveal
+      style={{ transitionDelay: `${Math.min(index, 6) * 60}ms` }}
+      className="group relative flex flex-col bg-card rounded-2xl border border-border/60 shadow-glass hover-lift overflow-hidden"
+    >
       <div className="absolute top-3 right-3 z-10">
         <BikeCompareButton slug={bike.slug} variant="card" />
       </div>
       {match != null && (
-        <span className="absolute top-3 left-3 z-10 inline-flex items-center gap-1 bg-signal text-signal-foreground text-[10px] font-black uppercase tracking-wider px-2 py-1 tabular-nums">
+        <span className="absolute top-3 left-3 z-10 inline-flex items-center gap-1 rounded-full bg-signal text-signal-foreground text-[10px] font-black uppercase tracking-wider px-2.5 py-1 tabular-nums shadow-glow">
           <Sparkles className="h-2.5 w-2.5" />
           {match}% passend
         </span>
@@ -224,7 +233,7 @@ function BikeProductCard({
         params={{ slug: bike.slug }}
         className="block"
       >
-        <div className="relative aspect-[4/3] bg-secondary overflow-hidden border-b border-border">
+        <div className="relative aspect-[4/3] bg-gradient-to-br from-zinc-50 via-white to-zinc-100 overflow-hidden">
           <img
             src={img}
             alt={`${bike.brand} ${bike.model}${bike.year ? ` (${bike.year})` : ""}`}
@@ -232,7 +241,7 @@ function BikeProductCard({
             decoding="async"
             width={720}
             height={540}
-            className="absolute inset-0 h-full w-full object-contain p-6 transition-transform duration-500 group-hover:scale-[1.03]"
+            className="absolute inset-0 h-full w-full object-contain p-6 transition-transform duration-500 group-hover:scale-[1.06]"
           />
         </div>
         <div className="flex flex-col gap-2 p-5">
@@ -241,12 +250,12 @@ function BikeProductCard({
               {bike.brand}
             </span>
             {bike.bike_type && (
-              <span className="text-[10px] font-medium text-muted-foreground border border-border px-2 py-0.5">
+              <span className="text-[10px] font-medium text-muted-foreground rounded-full border border-border px-2 py-0.5">
                 {bike.bike_type}
               </span>
             )}
           </div>
-          <h3 className="font-display text-xl leading-tight font-bold line-clamp-2 min-h-[3.2rem] group-hover:text-signal transition-colors">
+          <h3 className="font-display text-xl leading-tight font-bold line-clamp-2 min-h-[3.2rem] transition-colors group-hover:text-signal">
             {bike.model}
           </h3>
           <div className="mt-1 flex items-center justify-between gap-2">
@@ -264,26 +273,26 @@ function BikeProductCard({
               </div>
             </div>
             {rating && (
-              <div className="shrink-0 inline-flex items-center gap-1 border border-border bg-background px-2 py-1">
+              <div className="shrink-0 inline-flex items-center gap-1 rounded-full border border-border bg-background px-2.5 py-1">
                 <Star className="h-3 w-3 fill-signal text-signal" strokeWidth={0} />
-                <span className="text-xs font-bold tabular-nums font-mono">{rating}</span>
+                <span className="text-xs font-bold tabular-nums">{rating}</span>
               </div>
             )}
           </div>
         </div>
       </Link>
-      <div className="flex border-t border-border">
+      <div className="flex gap-2 px-5 pb-5">
         <Link
           to="/fahrraeder/$slug"
           params={{ slug: bike.slug }}
-          className="flex-1 inline-flex items-center justify-center gap-1.5 text-[11px] uppercase tracking-wider font-bold py-3 hover:bg-foreground hover:text-background transition-colors"
+          className="flex-1 inline-flex items-center justify-center gap-1 rounded-full bg-foreground text-background text-[11px] uppercase tracking-wider font-bold py-2.5 hover:bg-signal hover:text-signal-foreground transition-colors"
         >
           Details
           <ArrowRight className="h-3 w-3" />
         </Link>
         <Link
           to="/vergleich"
-          className="inline-flex items-center justify-center gap-1.5 text-[11px] uppercase tracking-wider font-bold py-3 px-4 border-l border-border hover:bg-foreground hover:text-background transition-colors"
+          className="inline-flex items-center justify-center gap-1 rounded-full border border-border text-[11px] uppercase tracking-wider font-bold py-2.5 px-4 hover:border-signal hover:text-signal transition-colors"
         >
           <GitCompareArrows className="h-3 w-3" />
           Vergleichen
@@ -293,18 +302,28 @@ function BikeProductCard({
   );
 }
 
-function CategoryCard({ cat }: { cat: Cat }) {
+function CategoryCard({ cat, index = 0 }: { cat: Cat; index?: number }) {
   return (
     <Link
+      data-reveal
+      style={{ transitionDelay: `${Math.min(index, 8) * 45}ms` }}
       to="/fahrraeder"
-      className="group relative flex flex-col justify-between border border-border bg-card p-4 md:p-5 aspect-[5/4] md:aspect-[4/5] overflow-hidden hover:bg-foreground hover:text-background transition-colors"
+      className="group relative flex flex-col justify-between rounded-2xl border border-border/60 bg-card p-4 md:p-5 aspect-[5/4] md:aspect-[4/5] overflow-hidden hover-lift glow-signal"
     >
+      <div
+        aria-hidden
+        className="absolute inset-0 -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        style={{
+          background:
+            "radial-gradient(120% 80% at 80% 100%, color-mix(in oklab, var(--signal) 22%, transparent), transparent 60%)",
+        }}
+      />
       <div className="flex items-center justify-between">
         <span
-          className={`inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider border ${
+          className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
             cat.ebike
-              ? "bg-signal text-signal-foreground border-signal"
-              : "border-current"
+              ? "bg-signal text-signal-foreground"
+              : "border border-border bg-background text-foreground"
           }`}
         >
           {cat.ebike ? (
@@ -316,13 +335,13 @@ function CategoryCard({ cat }: { cat: Cat }) {
           )}
           {cat.ebike ? "E-Bike" : "Fahrrad"}
         </span>
-        <ArrowRight className="h-4 w-4 opacity-50 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
+        <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-signal group-hover:translate-x-0.5 transition-all" />
       </div>
       <div>
         <h3 className="font-display text-lg md:text-2xl font-bold leading-tight tracking-tight">
           {cat.name}
         </h3>
-        <p className="mt-0.5 text-[11px] md:text-xs opacity-70">{cat.hint}</p>
+        <p className="mt-0.5 text-[11px] md:text-xs text-muted-foreground">{cat.hint}</p>
       </div>
     </Link>
   );
@@ -449,58 +468,57 @@ function Home() {
   return (
     <>
       {/* ============== HERO ============== */}
-      <section
-        aria-labelledby="hero-heading"
-        className="relative bg-background pt-8 md:pt-14 pb-8 md:pb-12 blueprint-grid"
-      >
-        <div className="mx-auto max-w-[1280px] px-4 md:px-8">
-          {/* Trust ribbon — spec strip */}
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[11px] text-muted-foreground border-b border-border pb-4">
-            <span className="inline-flex items-center gap-1.5">
-              <span className="inline-block h-1.5 w-1.5 bg-signal" />
-              DE — FAHRRAD-VERGLEICHSPORTAL
+      <section aria-labelledby="hero-heading" className="relative aurora-bg overflow-hidden">
+        <div className="relative z-[1] mx-auto max-w-[1280px] px-4 md:px-8 pt-10 md:pt-16 pb-10 md:pb-14">
+          {/* Trust ribbon — glass pill chips */}
+          <div className="flex flex-wrap items-center gap-2 animate-fade-in">
+            <span className="inline-flex items-center gap-1.5 rounded-full glass-card !shadow-none px-3 py-1.5 text-[11px] font-medium text-muted-foreground">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-signal animate-pulse-soft" />
+              Deutschlands Fahrrad-Vergleichsportal
             </span>
-            <span className="hidden md:inline-flex items-center gap-1.5">
-              <ShieldCheck className="h-3.5 w-3.5" /> 100% UNABHÄNGIG
+            <span className="hidden md:inline-flex items-center gap-1.5 rounded-full glass-card !shadow-none px-3 py-1.5 text-[11px] font-medium text-muted-foreground">
+              <ShieldCheck className="h-3.5 w-3.5 text-signal" /> 100 % unabhängig
             </span>
-            <span className="hidden md:inline-flex items-center gap-1.5">
-              <BadgeEuro className="h-3.5 w-3.5" /> ECHTZEIT-PREISE
+            <span className="hidden md:inline-flex items-center gap-1.5 rounded-full glass-card !shadow-none px-3 py-1.5 text-[11px] font-medium text-muted-foreground">
+              <BadgeEuro className="h-3.5 w-3.5 text-signal" /> Preisvergleich in Echtzeit
             </span>
           </div>
 
           <h1
             id="hero-heading"
-            className="mt-7 font-display font-black tracking-tight leading-[0.95] text-[clamp(2.25rem,6.8vw,4.75rem)]"
+            className="mt-6 font-display font-black tracking-tight leading-[0.95] text-[clamp(2.25rem,6.8vw,4.75rem)] animate-fade-up"
           >
-            Finde das perfekte
+            <span className="kinetic inline-block">Finde das perfekte</span>
             <span className="block">
               <span className="relative inline-block">
-                <span className="relative z-10 px-1">Fahrrad</span>
+                <span className="relative z-10 px-1 text-shine">Fahrrad</span>
                 <span
                   aria-hidden
-                  className="absolute inset-x-0 bottom-1 md:bottom-2 h-3 md:h-4 bg-signal -z-0"
+                  className="absolute inset-x-0 bottom-1 md:bottom-2 h-3 md:h-4 bg-signal/25 blur-md -z-0"
                 />
               </span>
               .
             </span>
           </h1>
 
-          <p className="mt-4 max-w-2xl text-base md:text-lg text-muted-foreground leading-relaxed">
+          <p className="mt-4 max-w-2xl text-base md:text-lg text-muted-foreground leading-relaxed animate-fade-up" style={{ animationDelay: "100ms" }}>
             Vergleiche Tausende Fahrräder, E-Bikes und Marken. Finde mit wenigen
             Klicks das Fahrrad, das wirklich zu dir passt.
           </p>
 
-          {/* Search — instant results, precise sharp field */}
-          <div ref={searchRef} className="relative mt-7">
+          {/* Search — glass, glowing on focus */}
+          <div ref={searchRef} className="relative mt-7 animate-scale-in" style={{ animationDelay: "180ms" }}>
             <div
               role="search"
               aria-label="Fahrrad-Suche"
-              className="relative flex w-full items-stretch border border-border bg-card overflow-hidden focus-within:border-foreground transition-colors"
+              className={`relative flex w-full items-stretch rounded-2xl glass-card overflow-hidden transition-shadow duration-500 ${
+                focused ? "!shadow-glow" : ""
+              }`}
             >
               <label htmlFor="hero-search" className="sr-only">
                 Fahrrad, Marke, Kategorie oder Ratgeber suchen
               </label>
-              <span className="flex items-center pl-5 pr-3 text-foreground/70">
+              <span className="flex items-center pl-5 pr-3 text-signal">
                 <Search className="h-5 w-5" />
               </span>
               <input
@@ -517,8 +535,8 @@ function Home() {
             </div>
 
             {focused && q.trim() && (
-              <div className="absolute left-0 right-0 top-full mt-1 z-40 border border-border bg-card shadow-elevated overflow-hidden animate-fade-in">
-                <div className="flex items-center justify-between px-4 py-2 border-b border-border">
+              <div className="absolute left-0 right-0 top-full mt-3 z-40 rounded-2xl glass-card !shadow-elevated overflow-hidden animate-fade-in">
+                <div className="flex items-center justify-between px-4 py-2 border-b border-border/60">
                   <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                     {results.length > 0 ? `${results.length} Ergebnisse` : "Keine Treffer"}
                   </span>
@@ -543,7 +561,7 @@ function Home() {
                         onClick={() => goToHit(r)}
                         className={`w-full flex items-center gap-4 px-4 py-3 text-left border-l-2 transition-colors ${
                           i === active
-                            ? "bg-accent/60 border-signal"
+                            ? "bg-signal/10 border-signal"
                             : "border-transparent hover:bg-accent/40"
                         }`}
                       >
@@ -554,10 +572,10 @@ function Home() {
                             width={64}
                             height={48}
                             loading="lazy"
-                            className="h-12 w-16 object-cover bg-muted shrink-0"
+                            className="h-12 w-16 rounded-lg object-cover bg-muted shrink-0"
                           />
                         ) : (
-                          <span className="h-12 w-16 bg-muted shrink-0 flex items-center justify-center text-foreground/60">
+                          <span className="h-12 w-16 rounded-lg bg-muted shrink-0 flex items-center justify-center text-foreground/60">
                             <Bike className="h-5 w-5" />
                           </span>
                         )}
@@ -585,35 +603,33 @@ function Home() {
             )}
           </div>
 
-          {/* Stats row — spec readout */}
-          <div className="mt-5 flex flex-wrap items-stretch gap-px bg-border border border-border">
-            <div className="flex-1 min-w-[110px] bg-background px-4 py-3">
-              <div className="font-mono text-xl md:text-2xl font-bold tabular-nums">
-                {totalBikes.toLocaleString("de-DE")}
+          {/* Stats row — floating glass tiles */}
+          <div className="mt-6 grid grid-cols-3 gap-3 md:max-w-xl">
+            {[
+              { value: totalBikes.toLocaleString("de-DE"), label: "Modelle" },
+              { value: totalEbikes.toLocaleString("de-DE"), label: "E-Bikes" },
+              { value: `${POPULAR_BRANDS.length}+`, label: "Marken" },
+            ].map((s, i) => (
+              <div
+                key={s.label}
+                data-reveal
+                style={{ transitionDelay: `${i * 80}ms` }}
+                className="glass-card !rounded-xl px-3 py-3 md:px-4 md:py-4 hover-lift"
+              >
+                <div className="font-mono text-xl md:text-2xl font-bold tabular-nums">{s.value}</div>
+                <div className="mt-0.5 eyebrow-sm text-muted-foreground">{s.label}</div>
               </div>
-              <div className="mt-0.5 eyebrow-sm text-muted-foreground">Modelle</div>
-            </div>
-            <div className="flex-1 min-w-[110px] bg-background px-4 py-3">
-              <div className="font-mono text-xl md:text-2xl font-bold tabular-nums">
-                {totalEbikes.toLocaleString("de-DE")}
-              </div>
-              <div className="mt-0.5 eyebrow-sm text-muted-foreground">E-Bikes</div>
-            </div>
-            <div className="flex-1 min-w-[110px] bg-background px-4 py-3">
-              <div className="font-mono text-xl md:text-2xl font-bold tabular-nums">
-                {POPULAR_BRANDS.length}+
-              </div>
-              <div className="mt-0.5 eyebrow-sm text-muted-foreground">Marken</div>
-            </div>
+            ))}
           </div>
 
-          {/* Two category rows — compact index tiles, not full-bleed hero banners */}
-          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-px bg-border border border-border">
+          {/* Two category rows — compact glass tiles */}
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
             <Link
+              data-reveal
               to="/fahrraeder"
-              className="group relative flex items-center gap-4 bg-card p-4 md:p-5 hover:bg-foreground hover:text-background transition-colors"
+              className="group relative flex items-center gap-4 rounded-2xl glass-card p-4 md:p-5 hover-lift glow-signal"
             >
-              <div className="relative h-16 w-16 md:h-20 md:w-20 shrink-0 overflow-hidden border border-border">
+              <div className="relative h-16 w-16 md:h-20 md:w-20 shrink-0 overflow-hidden rounded-xl">
                 <img
                   src={heroBike}
                   alt="Mountainbike auf einem Alpentrail — Kategorie Fahrräder"
@@ -622,28 +638,30 @@ function Home() {
                   loading="eager"
                   fetchPriority="high"
                   decoding="async"
-                  className="absolute inset-0 h-full w-full object-cover grayscale-[30%] transition-all duration-500 group-hover:grayscale-0 group-hover:scale-[1.05]"
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.08]"
                 />
               </div>
               <div className="min-w-0 flex-1">
-                <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider opacity-60">
+                <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
                   <Bike className="h-3 w-3" /> Kategorie
                 </span>
                 <h2 className="mt-0.5 font-display text-xl md:text-2xl font-black leading-tight tracking-tight">
                   Fahrräder
                 </h2>
-                <p className="mt-0.5 text-xs opacity-70 truncate">
-                  MTB, Gravel, Rennrad, City, Trekking & mehr
+                <p className="mt-0.5 text-xs text-muted-foreground truncate">
+                  MTB, Gravel, Rennrad, City & mehr
                 </p>
               </div>
-              <ArrowRight className="h-5 w-5 shrink-0 opacity-40 transition-all group-hover:opacity-100 group-hover:translate-x-1" />
+              <ArrowRight className="h-5 w-5 shrink-0 text-muted-foreground transition-all group-hover:text-signal group-hover:translate-x-1" />
             </Link>
 
             <Link
+              data-reveal
+              style={{ transitionDelay: "80ms" }}
               to="/e-bikes"
-              className="group relative flex items-center gap-4 bg-card p-4 md:p-5 hover:bg-foreground hover:text-background transition-colors"
+              className="group relative flex items-center gap-4 rounded-2xl glass-card p-4 md:p-5 hover-lift glow-signal"
             >
-              <div className="relative h-16 w-16 md:h-20 md:w-20 shrink-0 overflow-hidden border border-border">
+              <div className="relative h-16 w-16 md:h-20 md:w-20 shrink-0 overflow-hidden rounded-xl">
                 <img
                   src={ebikeImg}
                   alt="Premium E-Bike mit Bosch Antrieb — Kategorie E-Bikes"
@@ -652,57 +670,66 @@ function Home() {
                   loading="eager"
                   fetchPriority="high"
                   decoding="async"
-                  className="absolute inset-0 h-full w-full object-cover grayscale-[30%] transition-all duration-500 group-hover:grayscale-0 group-hover:scale-[1.05]"
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.08]"
                 />
-                <span className="absolute bottom-1 right-1 grid h-5 w-5 place-items-center bg-signal text-signal-foreground">
+                <span className="absolute bottom-1 right-1 grid h-5 w-5 place-items-center rounded-full bg-signal text-signal-foreground">
                   <Zap className="h-3 w-3" />
                 </span>
               </div>
               <div className="min-w-0 flex-1">
-                <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider opacity-60">
+                <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
                   <Zap className="h-3 w-3" /> E-Bike
                 </span>
                 <h2 className="mt-0.5 font-display text-xl md:text-2xl font-black leading-tight tracking-tight">
                   E-Bikes
                 </h2>
-                <p className="mt-0.5 text-xs opacity-70 truncate">
+                <p className="mt-0.5 text-xs text-muted-foreground truncate">
                   Bosch, Shimano & Co. — Pedelec bis Premium-E-MTB
                 </p>
               </div>
-              <ArrowRight className="h-5 w-5 shrink-0 opacity-40 transition-all group-hover:opacity-100 group-hover:translate-x-1" />
+              <ArrowRight className="h-5 w-5 shrink-0 text-muted-foreground transition-all group-hover:text-signal group-hover:translate-x-1" />
             </Link>
           </div>
         </div>
       </section>
 
       {/* ============== POPULAR CATEGORIES ============== */}
-      <section aria-labelledby="cats-heading" className="py-12 md:py-16 border-t border-border">
+      <section aria-labelledby="cats-heading" className="py-14 md:py-20">
         <div className="mx-auto max-w-[1280px] px-4 md:px-8">
           <div className="flex flex-wrap items-end justify-between gap-4 mb-6 md:mb-10">
             <SectionIndex n="01" label="Kategorien" />
             <Link
               to="/fahrraeder"
-              className="inline-flex items-center gap-1.5 border border-border px-4 py-2 text-xs font-bold uppercase tracking-wider hover:bg-foreground hover:text-background hover:border-foreground transition-colors"
+              className="inline-flex items-center gap-1.5 rounded-full glass-card !shadow-none px-4 py-2 text-xs font-bold uppercase tracking-wider hover-lift"
             >
               Alle Kategorien <ArrowRight className="h-3 w-3" />
             </Link>
           </div>
           <h2
             id="cats-heading"
+            data-reveal
             className="mb-6 md:mb-10 font-display text-2xl md:text-4xl font-black tracking-tight"
           >
             Beliebte Kategorien
           </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-px bg-border border border-border">
-            {POPULAR_CATEGORIES.map((c) => (
-              <CategoryCard key={c.slug} cat={c} />
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+            {POPULAR_CATEGORIES.map((c, i) => (
+              <CategoryCard key={c.slug} cat={c} index={i} />
             ))}
           </div>
         </div>
       </section>
 
       {/* ============== POPULAR BRANDS ============== */}
-      <section aria-labelledby="brands-heading" className="py-12 md:py-16 bg-secondary/50 border-t border-border">
+      <section aria-labelledby="brands-heading" className="py-14 md:py-20 relative overflow-hidden">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 -z-10"
+          style={{
+            background:
+              "radial-gradient(60% 60% at 50% 0%, color-mix(in oklab, var(--signal) 6%, transparent), transparent 70%)",
+          }}
+        />
         <div className="mx-auto max-w-[1280px] px-4 md:px-8">
           <div className="flex flex-wrap items-end justify-between gap-4 mb-6 md:mb-10">
             <SectionIndex n="02" label="Marken" />
@@ -710,6 +737,7 @@ function Home() {
           <div className="flex flex-wrap items-end justify-between gap-4 mb-6 md:mb-10">
             <h2
               id="brands-heading"
+              data-reveal
               className="font-display text-2xl md:text-4xl font-black tracking-tight"
             >
               Beliebte Marken
@@ -720,14 +748,14 @@ function Home() {
             </p>
           </div>
           <ul
-            className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-px bg-border border border-border"
+            className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2.5 md:gap-3"
             role="list"
           >
-            {POPULAR_BRANDS.map((b) => (
-              <li key={b}>
+            {POPULAR_BRANDS.map((b, i) => (
+              <li key={b} data-reveal style={{ transitionDelay: `${Math.min(i, 8) * 35}ms` }}>
                 <Link
                   to="/fahrraeder"
-                  className="group flex items-center justify-center bg-card h-14 md:h-16 px-3 hover:bg-foreground transition-colors"
+                  className="group flex items-center justify-center rounded-xl bg-card border border-border/60 shadow-glass h-14 md:h-16 px-3 hover-lift glow-signal"
                 >
                   <span className="font-display text-sm md:text-base font-bold tracking-tight group-hover:text-signal transition-colors text-center truncate">
                     {b}
@@ -741,13 +769,13 @@ function Home() {
 
       {/* ============== TOP FAHRRÄDER ============== */}
       {topBikes.length > 0 && (
-        <section aria-labelledby="top-heading" className="py-12 md:py-16 border-t border-border">
+        <section aria-labelledby="top-heading" className="py-14 md:py-20">
           <div className="mx-auto max-w-[1280px] px-4 md:px-8">
             <div className="flex flex-wrap items-end justify-between gap-4 mb-6 md:mb-10">
               <SectionIndex n="03" label="Bestenliste" />
               <Link
                 to="/fahrraeder"
-                className="inline-flex items-center gap-1.5 border border-border px-4 py-2 text-xs font-bold uppercase tracking-wider hover:bg-foreground hover:text-background hover:border-foreground transition-colors"
+                className="inline-flex items-center gap-1.5 rounded-full glass-card !shadow-none px-4 py-2 text-xs font-bold uppercase tracking-wider hover-lift"
               >
                 Alle ansehen <ArrowRight className="h-3 w-3" />
               </Link>
@@ -755,6 +783,7 @@ function Home() {
             <div className="flex flex-wrap items-end justify-between gap-4 mb-6 md:mb-10">
               <h2
                 id="top-heading"
+                data-reveal
                 className="font-display text-2xl md:text-4xl font-black tracking-tight"
               >
                 Top Fahrräder
@@ -766,9 +795,9 @@ function Home() {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-border border border-border">
-              {topBikes.map(({ bike, match }) => (
-                <BikeProductCard key={bike.id} bike={bike} match={match} />
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+              {topBikes.map(({ bike, match }, i) => (
+                <BikeProductCard key={bike.id} bike={bike} match={match} index={i} />
               ))}
             </div>
           </div>
@@ -776,12 +805,29 @@ function Home() {
       )}
 
       {/* ============== BIKE FINDER CTA ============== */}
-      <section aria-labelledby="finder-heading" className="py-12 md:py-16 border-t border-border">
+      <section aria-labelledby="finder-heading" className="py-14 md:py-20">
         <div className="mx-auto max-w-[1280px] px-4 md:px-8">
-          <div className="corner-ticks relative overflow-hidden border border-border bg-foreground text-background p-7 md:p-12">
+          <div
+            data-reveal
+            className="relative overflow-hidden rounded-3xl bg-foreground text-background p-7 md:p-12 shadow-elevated"
+          >
+            <div
+              aria-hidden
+              className="absolute -top-24 -right-24 h-96 w-96 rounded-full blur-3xl opacity-40"
+              style={{
+                background: "radial-gradient(closest-side, var(--signal), transparent 70%)",
+              }}
+            />
+            <div
+              aria-hidden
+              className="absolute -bottom-32 -left-16 h-72 w-72 rounded-full blur-3xl opacity-25"
+              style={{
+                background: "radial-gradient(closest-side, #7c5cff, transparent 70%)",
+              }}
+            />
             <div className="relative grid md:grid-cols-[1fr_auto] items-center gap-8">
               <div>
-                <span className="inline-flex items-center gap-1.5 bg-signal text-signal-foreground text-[10px] font-black uppercase tracking-wider px-2.5 py-1">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-signal text-signal-foreground text-[10px] font-black uppercase tracking-wider px-2.5 py-1 shadow-glow">
                   <Sparkles className="h-3 w-3" /> Bike Finder
                 </span>
                 <h2
@@ -796,8 +842,9 @@ function Home() {
                 </p>
               </div>
               <Link
+                data-magnetic="0.25"
                 to="/mein-rad"
-                className="group inline-flex items-center justify-center gap-2 bg-signal text-signal-foreground px-7 py-3.5 text-sm md:text-base font-black uppercase tracking-wider hover:gap-3 transition-all"
+                className="group inline-flex items-center justify-center gap-2 rounded-full bg-signal text-signal-foreground px-7 py-3.5 text-sm md:text-base font-black uppercase tracking-wider hover:gap-3 transition-all shadow-glow"
               >
                 <span className="group-hover:animate-wheel-spin-fast inline-block"><BikeIcon className="h-4 w-6" /></span>
                 Jetzt Fahrrad finden
@@ -809,25 +856,26 @@ function Home() {
       </section>
 
       {/* ============== RATGEBER ============== */}
-      <section aria-labelledby="guide-heading" className="py-12 md:py-16 bg-secondary/50 border-t border-border">
+      <section aria-labelledby="guide-heading" className="py-14 md:py-20">
         <div className="mx-auto max-w-[1280px] px-4 md:px-8">
           <div className="flex flex-wrap items-end justify-between gap-4 mb-6 md:mb-10">
             <SectionIndex n="04" label="Ratgeber" />
             <Link
               to="/ratgeber"
-              className="inline-flex items-center gap-1.5 border border-border px-4 py-2 text-xs font-bold uppercase tracking-wider hover:bg-foreground hover:text-background hover:border-foreground transition-colors"
+              className="inline-flex items-center gap-1.5 rounded-full glass-card !shadow-none px-4 py-2 text-xs font-bold uppercase tracking-wider hover-lift"
             >
               Alle Ratgeber <ArrowRight className="h-3 w-3" />
             </Link>
           </div>
           <h2
             id="guide-heading"
+            data-reveal
             className="mb-6 md:mb-10 font-display text-2xl md:text-4xl font-black tracking-tight"
           >
             Aktuelle Kaufberatung
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border border border-border">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
             {(ratgeberArticles.length >= 6
               ? ratgeberArticles.map((a: any, i) => ({
                   key: a.slug,
@@ -845,15 +893,17 @@ function Home() {
                   href: "/ratgeber" as const,
                   icon: r.icon,
                 }))
-            ).map((item) => {
+            ).map((item, i) => {
               const Icon = item.icon;
               return (
                 <Link
                   key={item.key}
+                  data-reveal
+                  style={{ transitionDelay: `${Math.min(i, 5) * 60}ms` }}
                   to={item.href as any}
-                  className="group relative flex flex-col overflow-hidden bg-card"
+                  className="group relative flex flex-col overflow-hidden rounded-2xl bg-card border border-border/60 shadow-glass hover-lift"
                 >
-                  <div className="relative aspect-[16/10] overflow-hidden border-b border-border">
+                  <div className="relative aspect-[16/10] overflow-hidden">
                     <img
                       src={item.image}
                       alt={item.title}
@@ -861,13 +911,13 @@ function Home() {
                       decoding="async"
                       width={800}
                       height={450}
-                      className="absolute inset-0 h-full w-full object-cover grayscale-[10%] transition-transform duration-500 group-hover:scale-[1.03]"
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.06]"
                     />
                     <div
                       aria-hidden
                       className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"
                     />
-                    <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white text-foreground text-[10px] font-bold uppercase tracking-wider px-2.5 py-1">
+                    <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-white text-foreground text-[10px] font-bold uppercase tracking-wider px-2.5 py-1">
                       <Icon className="h-3 w-3" /> {item.tag}
                     </span>
                   </div>

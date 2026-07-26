@@ -130,8 +130,8 @@ export function InlineSearch({
   return (
     <div ref={containerRef} className="relative">
       <div
-        className={`group relative flex items-center gap-3 border bg-card px-4 py-3 transition-colors md:px-5 md:py-4 ${
-          active ? "border-signal" : "border-border hover:border-foreground"
+        className={`group relative flex items-center gap-3 rounded-2xl glass-card px-4 py-3 transition-shadow duration-500 md:px-5 md:py-4 ${
+          active ? "!shadow-glow" : ""
         }`}
       >
         <Search
@@ -177,13 +177,13 @@ export function InlineSearch({
               setActiveIndex(-1);
               inputRef.current?.focus();
             }}
-            className="grid h-8 w-8 shrink-0 place-items-center border border-border bg-background text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"
+            className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-border bg-background text-muted-foreground transition-colors hover:border-signal hover:text-signal"
             aria-label="Suche zurücksetzen"
           >
             <X className="h-4 w-4" strokeWidth={2} />
           </button>
         ) : (
-          <kbd className="hidden shrink-0 border border-border bg-background px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground md:inline-block">
+          <kbd className="hidden shrink-0 rounded-lg border border-border bg-background px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground md:inline-block">
             /
           </kbd>
         )}
@@ -194,7 +194,7 @@ export function InlineSearch({
         <div
           id="search-suggestions"
           role="listbox"
-          className="absolute z-50 mt-1 w-full overflow-hidden border border-border bg-card shadow-elevated animate-in fade-in slide-in-from-top-2 duration-200"
+          className="absolute z-50 mt-2 w-full overflow-hidden rounded-2xl glass-card !shadow-elevated animate-in fade-in slide-in-from-top-2 duration-200"
         >
           <div className="border-b border-border/50 px-4 py-2.5 flex items-center justify-between">
             <span className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
@@ -222,7 +222,7 @@ export function InlineSearch({
                     }`}
                   >
                     {s.icon && (
-                      <div className="grid h-9 w-9 shrink-0 place-items-center border border-border bg-background text-signal">
+                      <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-border bg-background text-signal">
                         {s.icon}
                       </div>
                     )}
@@ -237,7 +237,7 @@ export function InlineSearch({
                       )}
                     </div>
                     {s.category && (
-                      <span className="hidden sm:inline-block shrink-0 border border-border px-2 py-0.5 text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
+                      <span className="hidden sm:inline-block shrink-0 rounded-full border border-border px-2 py-0.5 text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
                         {s.category}
                       </span>
                     )}
@@ -262,7 +262,7 @@ export function InlineSearch({
                     }`}
                   >
                     {s.icon && (
-                      <div className="grid h-9 w-9 shrink-0 place-items-center border border-border bg-background text-signal">
+                      <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-border bg-background text-signal">
                         {s.icon}
                       </div>
                     )}
@@ -277,7 +277,7 @@ export function InlineSearch({
                       )}
                     </div>
                     {s.category && (
-                      <span className="hidden sm:inline-block shrink-0 border border-border px-2 py-0.5 text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
+                      <span className="hidden sm:inline-block shrink-0 rounded-full border border-border px-2 py-0.5 text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
                         {s.category}
                       </span>
                     )}

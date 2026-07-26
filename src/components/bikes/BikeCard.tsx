@@ -22,7 +22,7 @@ export function BikeCard({
           ? "bg-signal text-signal-foreground"
           : "bg-amber-500 text-white";
   return (
-    <div className="group relative bg-card border border-border overflow-hidden hover:border-signal transition-colors">
+    <div className="group relative bg-card rounded-2xl border border-border/60 shadow-glass overflow-hidden hover-lift glow-signal">
       <BikeFavoriteButton
         variant="card"
         bike={{
@@ -57,19 +57,19 @@ export function BikeCard({
           </div>
           {matchPercent != null && (
             <span
-              className={`absolute top-2.5 left-2.5 inline-flex items-center gap-1 ${matchTone} text-[10px] uppercase tracking-wider font-black px-1.5 py-1 shadow-sm tabular-nums`}
+              className={`absolute top-2.5 left-2.5 inline-flex items-center gap-1 rounded-full ${matchTone} text-[10px] uppercase tracking-wider font-black px-2 py-1 shadow-glow tabular-nums`}
               title="Match zu deinem RadProfil"
             >
               <Sparkles className="h-2.5 w-2.5" /> {matchPercent}%
             </span>
           )}
           {bike.category === "ebike" && (
-            <span className={`absolute ${matchPercent != null ? "top-9" : "top-2.5"} left-2.5 inline-flex items-center gap-1 bg-signal text-[#050505] text-[10px] uppercase tracking-wider font-bold px-2 py-1 shadow-sm`}>
+            <span className={`absolute ${matchPercent != null ? "top-9" : "top-2.5"} left-2.5 inline-flex items-center gap-1 rounded-full bg-signal text-[#050505] text-[10px] uppercase tracking-wider font-bold px-2 py-1 shadow-sm`}>
               <Zap className="h-2.5 w-2.5" /> E-Bike
             </span>
           )}
           {bike.price_eur != null && (
-            <span className="absolute bottom-2.5 right-2.5 bg-background/90 backdrop-blur text-foreground text-[11px] font-mono tabular-nums px-2 py-1 border border-border shadow-sm">
+            <span className="absolute bottom-2.5 right-2.5 rounded-full bg-background/90 backdrop-blur text-foreground text-[11px] font-mono tabular-nums px-2.5 py-1 border border-border shadow-sm">
               ab {bike.price_eur.toLocaleString("de-DE")} €
             </span>
           )}

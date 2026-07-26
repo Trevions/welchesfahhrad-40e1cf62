@@ -59,11 +59,11 @@ export function Header() {
             <Link
               to="/merkliste"
               aria-label="Merkliste"
-              className="relative flex h-9 w-9 items-center justify-center border border-border text-muted-foreground hover:text-foreground hover:border-foreground transition-colors"
+              className="relative flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-signal hover:text-signal"
             >
               <Bookmark className="h-3.5 w-3.5" />
               {bookmarks.length > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 inline-flex items-center justify-center bg-signal text-[10px] font-bold text-background">
+                <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 inline-flex items-center justify-center rounded-full bg-signal text-[10px] font-bold text-background shadow-glow">
                   {bookmarks.length}
                 </span>
               )}

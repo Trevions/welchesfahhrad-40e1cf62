@@ -74,12 +74,11 @@ function FahrraederPage() {
   return (
     <div className="bg-background">
       {/* HERO */}
-      <section className="border-b border-border bg-card">
-        <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-12 md:py-20 border-x border-border">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="h-px w-10 bg-signal" />
-            <span className="eyebrow text-signal">Die Fahrrad-Datenbank</span>
-          </div>
+      <section className="relative aurora-bg overflow-hidden">
+        <div className="relative z-[1] mx-auto max-w-[1400px] px-4 md:px-8 py-12 md:py-20">
+          <span className="inline-flex items-center gap-1.5 rounded-full glass-card !shadow-none px-3 py-1.5 eyebrow text-signal">
+            Die Fahrrad-Datenbank
+          </span>
           <h1 className="font-display font-black tracking-tight leading-[0.95] text-[clamp(2.25rem,7vw,5rem)] max-w-3xl">
             Fahrräder <span className="italic font-light text-muted-foreground">& E-Bikes</span>
           </h1>
@@ -90,17 +89,17 @@ function FahrraederPage() {
       </section>
 
       {/* FILTER BAR */}
-      <section className="sticky top-16 z-20 bg-background/90 backdrop-blur border-b border-border">
-        <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-3 border-x border-border flex flex-col gap-3">
+      <section className="sticky top-16 z-20 bg-background/70 backdrop-blur-xl border-b border-border/60">
+        <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-3 flex flex-col gap-3">
           <div className="flex items-center gap-2 flex-wrap">
             {(["all", "bike", "ebike"] as Filter[]).map((f) => (
               <button
                 key={f}
                 onClick={() => setFilter(f)}
-                className={`px-4 py-1.5 text-[11px] uppercase tracking-wider font-semibold border transition-colors ${
+                className={`px-4 py-1.5 rounded-full text-[11px] uppercase tracking-wider font-semibold border transition-colors ${
                   filter === f
-                    ? "bg-signal text-[#050505] border-signal"
-                    : "bg-transparent border-border text-muted-foreground hover:border-signal hover:text-signal"
+                    ? "bg-signal text-[#050505] border-signal shadow-glow"
+                    : "bg-card border-border text-muted-foreground hover:border-signal hover:text-signal"
                 }`}
               >
                 {f === "all" ? "Alle" : f === "bike" ? "Fahrräder" : "E-Bikes"}
@@ -108,7 +107,7 @@ function FahrraederPage() {
             ))}
             <Link
               to="/favoriten"
-              className="ml-auto inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] uppercase tracking-wider font-semibold border border-border text-foreground hover:border-signal hover:text-signal transition-colors"
+              className="ml-auto inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] uppercase tracking-wider font-semibold border border-border bg-card text-foreground hover:border-signal hover:text-signal transition-colors"
             >
               <Heart className={"h-3.5 w-3.5 " + (favorites.length > 0 ? "fill-signal text-signal" : "")} />
               Favoriten{favorites.length > 0 ? ` (${favorites.length})` : ""}
@@ -125,13 +124,13 @@ function FahrraederPage() {
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
                 placeholder="Marke oder Modell…"
-                className="w-full pl-9 pr-3 py-1.5 text-sm bg-card border border-border focus:border-signal outline-none rounded-none"
+                className="w-full pl-9 pr-3 py-1.5 text-sm bg-card rounded-full border border-border focus:border-signal outline-none"
               />
             </div>
             <select
               value={type}
               onChange={(e) => setType(e.target.value)}
-              className="text-xs uppercase tracking-wider px-3 py-1.5 bg-card border border-border outline-none focus:border-signal"
+              className="text-xs uppercase tracking-wider px-3 py-1.5 rounded-full bg-card border border-border outline-none focus:border-signal"
             >
               <option value="all">Alle Typen</option>
               {BIKE_TYPES.map((t) => (
@@ -145,15 +144,15 @@ function FahrraederPage() {
       </section>
 
       {/* GRID */}
-      <section className="mx-auto max-w-[1400px] px-4 md:px-8 py-8 md:py-12 border-x border-border">
+      <section className="mx-auto max-w-[1400px] px-4 md:px-8 py-8 md:py-12">
         {/* Personalisierungs-Hinweis */}
         {hasProfile ? (
           <Link
             to="/mein-rad"
-            className="mb-6 flex items-center justify-between gap-3 border border-border bg-card p-3 md:p-4 hover:border-signal transition-colors group"
+            className="mb-6 flex items-center justify-between gap-3 rounded-2xl glass-card p-3 md:p-4 hover-lift glow-signal group"
           >
             <div className="flex items-center gap-3 min-w-0">
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center border border-border bg-background">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border bg-background">
                 <Sparkles className="h-4 w-4 text-signal" />
               </span>
               <div className="min-w-0">
@@ -171,10 +170,10 @@ function FahrraederPage() {
         ) : (
           <Link
             to="/mein-rad"
-            className="mb-6 flex items-center justify-between gap-3 border border-dashed border-border bg-card/60 p-3 md:p-4 hover:border-signal transition-colors group"
+            className="mb-6 flex items-center justify-between gap-3 rounded-2xl glass-card border-dashed p-3 md:p-4 hover-lift glow-signal group"
           >
             <div className="flex items-center gap-3 min-w-0">
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center border border-border bg-background">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border bg-background">
                 <Sparkles className="h-4 w-4 text-signal" />
               </span>
               <div className="min-w-0">
@@ -184,14 +183,14 @@ function FahrraederPage() {
                 </div>
               </div>
             </div>
-            <span className="shrink-0 inline-flex items-center gap-1 bg-signal text-signal-foreground px-3 py-2 eyebrow-sm">
+            <span className="shrink-0 inline-flex items-center gap-1 rounded-full bg-signal text-signal-foreground px-3 py-2 eyebrow-sm shadow-glow">
               Starten <ArrowRight className="h-3 w-3" />
             </span>
           </Link>
         )}
 
         {bikes.length === 0 ? (
-          <div className="border border-dashed border-border p-16 text-center text-sm text-muted-foreground">
+          <div className="rounded-2xl glass-card border-dashed p-16 text-center text-sm text-muted-foreground">
             Keine Fahrräder gefunden.
           </div>
         ) : (

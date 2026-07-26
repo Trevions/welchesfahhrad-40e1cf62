@@ -128,10 +128,10 @@ export function CategoryPage({ category, articles, pillFilters }: Props) {
                     onClick={() => setActiveFilter(p.id)}
                     aria-pressed={active}
                     className={[
-                      "group inline-flex items-center gap-2 whitespace-nowrap border px-4 py-2 text-xs uppercase tracking-[0.18em] font-bold transition-all shrink-0",
+                      "group inline-flex items-center gap-2 whitespace-nowrap rounded-full border px-4 py-2 text-xs uppercase tracking-[0.18em] font-bold transition-all shrink-0",
                       active
-                        ? "bg-signal text-signal-foreground border-signal shadow-[0_8px_24px_-12px_color-mix(in_oklab,var(--signal)_70%,transparent)]"
-                        : "border-border text-foreground/80 hover:border-signal hover:text-signal",
+                        ? "bg-signal text-signal-foreground border-signal shadow-glow"
+                        : "border-border bg-card text-foreground/80 hover:border-signal hover:text-signal",
                     ].join(" ")}
                   >
                     {p.icon === "ebike" && <Zap className="h-3.5 w-3.5" />}
@@ -175,7 +175,7 @@ export function CategoryPage({ category, articles, pillFilters }: Props) {
         <section className="border-b border-border">
           <div className="mx-auto max-w-[1400px] px-6 md:px-8 py-12 md:py-16 border-x border-border">
             {searched.length === 0 ? (
-              <div className="border border-border bg-card p-10 text-center">
+              <div className="rounded-2xl glass-card p-10 text-center">
                 <p className="font-display text-xl font-black tracking-tight">
                   Keine Beiträge gefunden für „{q}"
                 </p>
@@ -260,7 +260,7 @@ export function CategoryPage({ category, articles, pillFilters }: Props) {
             </div>
 
             <aside className="lg:col-span-4 space-y-10 lg:sticky lg:top-24 self-start">
-              <div className="border border-border p-6 bg-card">
+              <div className="rounded-2xl glass-card p-6">
                 <div className="eyebrow-sm text-signal mb-3">Themenbereiche</div>
                 <h3 className="font-display text-xl font-black mb-5">
                   Weitere Rubriken
@@ -285,7 +285,7 @@ export function CategoryPage({ category, articles, pillFilters }: Props) {
                 </ul>
               </div>
 
-              <div className="border border-border p-6">
+              <div className="rounded-2xl glass-card p-6">
                 <div className="eyebrow-sm text-signal mb-3">Meistgelesen</div>
                 <h3 className="font-display text-xl font-black mb-5">
                   Auch interessant
@@ -308,7 +308,7 @@ export function CategoryPage({ category, articles, pillFilters }: Props) {
                 </ul>
               </div>
 
-              <div className="border border-signal/40 bg-signal/5 p-6">
+              <div className="rounded-2xl glass-card !border-signal/30 bg-signal/5 p-6">
                 <div className="eyebrow-sm text-signal mb-2">Newsletter</div>
                 <h3 className="font-display text-xl font-black mb-3 leading-tight">
                   Die {meta.eyebrow}-Woche direkt ins Postfach
@@ -324,11 +324,11 @@ export function CategoryPage({ category, articles, pillFilters }: Props) {
                     type="email"
                     required
                     placeholder="E-Mail"
-                    className="flex-1 bg-background border border-border px-3 py-2 text-sm outline-none focus:border-signal"
+                    className="flex-1 rounded-full bg-background border border-border px-4 py-2 text-sm outline-none focus:border-signal"
                   />
                   <button
                     type="submit"
-                    className="bg-signal text-signal-foreground px-4 py-2 eyebrow-sm hover:bg-signal/90"
+                    className="rounded-full bg-signal text-signal-foreground px-4 py-2 eyebrow-sm hover:bg-signal/90 shadow-glow"
                   >
                     Los
                   </button>

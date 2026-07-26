@@ -22,7 +22,7 @@ export function ArticleCard({ article, featured, index = 0, size = "md" }: Props
       <Link
         to="/artikel/$slug"
         params={{ slug: article.slug }}
-        className="group relative block overflow-hidden bg-card border border-border animate-fade-up hover-lift glow-signal"
+        className="group relative block overflow-hidden rounded-3xl bg-card border border-border/60 shadow-elevated animate-fade-up hover-lift glow-signal"
         data-reveal
         style={{ animationDelay: `${index * 80}ms` }}
       >
@@ -76,7 +76,7 @@ export function ArticleCard({ article, featured, index = 0, size = "md" }: Props
       data-reveal
       style={{ animationDelay: `${index * 60}ms` }}
     >
-      <div className="relative aspect-[4/3] overflow-hidden bg-card">
+      <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-card shadow-glass">
         <img
           src={article.image}
           alt={article.title}
@@ -89,7 +89,7 @@ export function ArticleCard({ article, featured, index = 0, size = "md" }: Props
         />
 
         <div className="absolute top-3 left-3">
-          <span className="eyebrow bg-background/85 backdrop-blur-md text-signal px-2.5 py-1.5">
+          <span className="eyebrow rounded-full bg-background/85 backdrop-blur-md text-signal px-2.5 py-1.5">
             {article.category}
           </span>
         </div>

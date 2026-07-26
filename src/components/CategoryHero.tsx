@@ -6,12 +6,11 @@ interface Props {
 
 export function CategoryHero({ eyebrow, title, description }: Props) {
   return (
-    <section className="relative border-b border-border">
-      <div className="mx-auto max-w-[1400px] px-6 md:px-8 pt-12 md:pt-20 pb-10 md:pb-16">
-        <div className="flex items-center gap-3 animate-fade-in">
-          <span className="h-px w-12 bg-signal animate-rule-grow" />
-          <span className="eyebrow text-signal">{eyebrow}</span>
-        </div>
+    <section className="relative aurora-bg overflow-hidden">
+      <div className="relative z-[1] mx-auto max-w-[1400px] px-6 md:px-8 pt-12 md:pt-20 pb-10 md:pb-16">
+        <span className="inline-flex items-center gap-1.5 rounded-full glass-card !shadow-none px-3 py-1.5 eyebrow text-signal animate-fade-in">
+          {eyebrow}
+        </span>
         <h1 className="mt-6 font-display font-black tracking-tight text-foreground text-5xl md:text-7xl lg:text-8xl leading-[0.9] max-w-5xl animate-fade-up">
           {title.split(" ").length > 2 ? (
             <>

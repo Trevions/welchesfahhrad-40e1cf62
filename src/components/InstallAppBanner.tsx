@@ -128,10 +128,10 @@ export function InstallAppBanner() {
         style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 72px)" }}
       >
         <div className="mx-3 mb-3 pointer-events-auto">
-          <div className="relative border border-border bg-card shadow-elevated overflow-hidden">
+          <div className="relative rounded-2xl glass-card !shadow-elevated overflow-hidden">
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-signal to-transparent" />
             <div className="flex items-center gap-3 p-3.5">
-              <div className="h-11 w-11 shrink-0 bg-signal/15 grid place-items-center border border-signal/30">
+              <div className="h-11 w-11 shrink-0 rounded-xl bg-signal/15 grid place-items-center border border-signal/30">
                 <Smartphone className="h-5 w-5 text-signal" />
               </div>
               <div className="flex-1 min-w-0">
@@ -144,7 +144,7 @@ export function InstallAppBanner() {
               </div>
               <button
                 onClick={install}
-                className="shrink-0 inline-flex items-center gap-1.5 bg-foreground text-background px-3.5 py-2 text-[11px] font-bold uppercase tracking-wider hover:bg-signal hover:text-signal-foreground transition-colors"
+                className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-foreground text-background px-3.5 py-2 text-[11px] font-bold uppercase tracking-wider hover:bg-signal hover:text-signal-foreground transition-colors shadow-glow"
               >
                 <Download className="h-3.5 w-3.5" />
                 {platform === "ios" ? "Anleitung" : "Installieren"}
@@ -152,7 +152,7 @@ export function InstallAppBanner() {
               <button
                 onClick={dismiss}
                 aria-label="Schließen"
-                className="shrink-0 h-8 w-8 grid place-items-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                className="shrink-0 h-8 w-8 rounded-full grid place-items-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -167,7 +167,7 @@ export function InstallAppBanner() {
           onClick={dismiss}
         >
           <div
-            className="w-full md:max-w-sm bg-card border-t md:border border-border overflow-hidden animate-fade-up"
+            className="w-full md:max-w-sm bg-card border-t md:border border-border md:rounded-3xl rounded-t-3xl overflow-hidden animate-fade-up shadow-elevated"
             onClick={(e) => e.stopPropagation()}
             style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
           >
@@ -181,14 +181,14 @@ export function InstallAppBanner() {
               <button
                 onClick={dismiss}
                 aria-label="Schließen"
-                className="h-8 w-8 grid place-items-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                className="h-8 w-8 rounded-full grid place-items-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
               >
                 <X className="h-4 w-4" />
               </button>
             </div>
             <ol className="p-5 space-y-4 text-sm">
               <li className="flex items-start gap-3">
-                <span className="h-7 w-7 shrink-0 grid place-items-center border border-border bg-background text-foreground font-mono font-bold text-xs">
+                <span className="h-7 w-7 shrink-0 grid place-items-center rounded-full bg-signal/15 border border-signal/30 text-signal font-mono font-bold text-xs">
                   1
                 </span>
                 <span className="pt-1">
@@ -196,7 +196,7 @@ export function InstallAppBanner() {
                 </span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="h-7 w-7 shrink-0 grid place-items-center border border-border bg-background text-foreground font-mono font-bold text-xs">
+                <span className="h-7 w-7 shrink-0 grid place-items-center rounded-full bg-signal/15 border border-signal/30 text-signal font-mono font-bold text-xs">
                   2
                 </span>
                 <span className="pt-1 flex items-center gap-1.5">
@@ -206,18 +206,18 @@ export function InstallAppBanner() {
                 </span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="h-7 w-7 shrink-0 grid place-items-center border border-border bg-background text-foreground font-mono font-bold text-xs">
+                <span className="h-7 w-7 shrink-0 grid place-items-center rounded-full bg-signal/15 border border-signal/30 text-signal font-mono font-bold text-xs">
                   3
                 </span>
                 <span className="pt-1 flex items-center gap-1.5 flex-wrap">
                   Wähle
-                  <span className="inline-flex items-center gap-1 border border-border bg-muted px-1.5 py-0.5 font-semibold">
+                  <span className="inline-flex items-center gap-1 rounded-full border border-border bg-muted px-1.5 py-0.5 font-semibold">
                     <Plus className="h-3.5 w-3.5" /> Zum Home-Bildschirm
                   </span>
                 </span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="h-7 w-7 shrink-0 grid place-items-center border border-border bg-background text-foreground font-mono font-bold text-xs">
+                <span className="h-7 w-7 shrink-0 grid place-items-center rounded-full bg-signal/15 border border-signal/30 text-signal font-mono font-bold text-xs">
                   4
                 </span>
                 <span className="pt-1">
@@ -228,7 +228,7 @@ export function InstallAppBanner() {
             <div className="px-5 pb-5">
               <button
                 onClick={dismiss}
-                className="w-full bg-foreground text-background py-3 text-xs font-bold uppercase tracking-widest hover:bg-signal hover:text-signal-foreground transition-colors"
+                className="w-full rounded-full bg-foreground text-background py-3 text-xs font-bold uppercase tracking-widest hover:bg-signal hover:text-signal-foreground transition-colors shadow-glow"
               >
                 Verstanden
               </button>

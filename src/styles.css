@@ -23,10 +23,12 @@
 }
 
 /*
- * WELCHESFAHRRAD.DE — "Deutsche Präzision" design system
- * Near-monochrome base (white / near-black / grey), one confident cobalt
- * signal color, DM Serif Display editorial headlines over Inter body text,
- * tight geometric radii, hairline rules instead of soft drop shadows.
+ * WELCHESFAHRRAD.DE — Glassmorphic premium design system
+ * Frosted-glass cards floating over a soft aurora backdrop, generous
+ * rounded geometry, layered soft-colored shadows, cobalt signal glow,
+ * DM Serif Display editorial headlines over Inter body text. Built to
+ * read as a big, expensive, considered product — depth and motion over
+ * flat hairline minimalism.
  */
 
 @theme inline {
@@ -65,8 +67,9 @@
   --font-display: "DM Serif Display", "DM Serif Display Fallback", "Georgia", "Times New Roman", serif;
   --font-sans: "Inter", "Inter Fallback", system-ui, -apple-system, sans-serif;
 
-  --shadow-glass: 0 1px 0 0 oklch(1 0 0 / 0.04) inset, 0 16px 32px -18px oklch(0 0 0 / 0.45);
-  --shadow-elevated: 0 20px 44px -24px oklch(0 0 0 / 0.6);
+  --shadow-glass: 0 1px 0 0 oklch(1 0 0 / 0.6) inset, 0 30px 70px -25px oklch(0.25 0.06 265 / 0.28);
+  --shadow-elevated: 0 40px 90px -30px oklch(0.22 0.07 265 / 0.32), 0 10px 30px -12px oklch(0.22 0.07 265 / 0.18);
+  --shadow-glow: 0 0 0 1px color-mix(in oklab, var(--signal) 30%, transparent), 0 25px 70px -20px color-mix(in oklab, var(--signal) 45%, transparent);
 
   --ease-apple: cubic-bezier(0.32, 0.72, 0, 1);
 }
@@ -75,7 +78,7 @@
 :root,
 .light,
 .dark {
-  --radius: 0.5rem;
+  --radius: 1.25rem;
   --background: oklch(1 0 0);                     /* pure white */
   --foreground: oklch(0.14 0 0);                  /* near-black */
   --card: oklch(1 0 0);
@@ -141,6 +144,36 @@
   border: 1px solid var(--border);
 }
 
+/* Signature frosted-glass card: the base unit of the premium UI */
+/* Composable — always pair with an explicit rounded-* class */
+@utility glass-card {
+  background: var(--surface-elevated);
+  backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid color-mix(in oklab, var(--foreground) 8%, transparent);
+  box-shadow: var(--shadow-glass);
+}
+
+/* Soft blurred color-blob backdrop — the "expensive SaaS keynote" mesh gradient */
+/* Pair with an explicit "relative z-10" (or similar) on the direct
+   content child so it sits above the blurred blob — kept out of this
+   utility to avoid relying on a `> *` child-combinator inside @utility. */
+@utility aurora-bg {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -10% -10% auto -10%;
+    height: 140%;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(38% 45% at 15% 15%, color-mix(in oklab, var(--signal) 22%, transparent), transparent 70%),
+      radial-gradient(32% 40% at 85% 10%, color-mix(in oklab, #7c5cff 18%, transparent), transparent 70%),
+      radial-gradient(45% 50% at 50% 90%, color-mix(in oklab, var(--signal) 12%, transparent), transparent 70%);
+    filter: blur(60px);
+  }
+}
+
 /* Eyebrow label: 10px uppercase wide-tracked tag */
 @utility eyebrow {
   font-size: 10px;
@@ -170,40 +203,6 @@
 
 @utility text-signal {
   color: var(--signal);
-}
-
-/* Blueprint corner registration marks — top-left / bottom-right ticks */
-@utility corner-ticks {
-  position: relative;
-  &::before,
-  &::after {
-    content: "";
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    border: 1px solid color-mix(in oklab, currentColor 45%, transparent);
-    pointer-events: none;
-  }
-  &::before {
-    top: -1px;
-    left: -1px;
-    border-right: 0;
-    border-bottom: 0;
-  }
-  &::after {
-    bottom: -1px;
-    right: -1px;
-    border-left: 0;
-    border-top: 0;
-  }
-}
-
-/* Faint technical grid backdrop */
-@utility blueprint-grid {
-  background-image:
-    linear-gradient(color-mix(in oklab, var(--foreground) 6%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in oklab, var(--foreground) 6%, transparent) 1px, transparent 1px);
-  background-size: 44px 44px;
 }
 
 @utility drop-cap {
@@ -451,28 +450,29 @@
   will-change: transform;
 }
 
-/* Scroll progress bar */
+/* Scroll progress bar — glowing signal gradient */
 .scroll-progress {
   position: fixed;
   top: 0; left: 0;
-  height: 2px;
+  height: 3px;
   width: var(--scroll, 0%);
-  background: var(--signal);
+  background: linear-gradient(90deg, var(--signal), color-mix(in oklab, var(--signal) 40%, #7c5cff));
   z-index: 100;
   pointer-events: none;
+  box-shadow: 0 0 16px color-mix(in oklab, var(--signal) 70%, transparent);
   transition: width 80ms linear;
 }
 
-/* Spotlight cursor — subtle instrument-panel glint, not a SaaS glow */
+/* Spotlight cursor — soft ambient glow that follows the pointer */
 .spotlight {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 1;
   background: radial-gradient(
-    420px circle at var(--mx, 50%) var(--my, 50%),
-    color-mix(in oklab, var(--signal) 5%, transparent),
-    transparent 60%
+    560px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in oklab, var(--signal) 10%, transparent),
+    transparent 62%
   );
   mix-blend-mode: normal;
   opacity: 0;
